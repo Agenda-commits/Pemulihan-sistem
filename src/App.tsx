@@ -12,8 +12,32 @@ export default function App() {
   const [endTime, setEndTime] = useState<string>('');
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('Initializing...');
+  const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
+    const systemLogs = [
+      '[SYSTEM] Memulai protokol pemulihan...',
+      '[ANALYSIS] Menjalankan proses analisis mendalam...',
+      '[UPGRADE] Mengunduh paket upgrade sistem v2.4.0...',
+      '[REPAIR] Melakukan perbaikan pada modul inti...',
+      '[CLEANUP] Pembersihan bug dan optimasi cache...',
+      '[SECURITY] Memverifikasi enkripsi akun kerja...',
+      '[DATABASE] Sinkronisasi database global...',
+      '[NETWORK] Menstabilkan koneksi server...',
+      '[SYSTEM] Validasi integritas file selesai.',
+      '[PROCESS] Menunggu respon koordinator...'
+    ];
+
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+      if (logIndex < systemLogs.length) {
+        setLogs(prev => [...prev.slice(-4), systemLogs[logIndex]]);
+        logIndex++;
+      } else {
+        logIndex = 0; // Loop logs
+      }
+    }, 3000);
+
     const now = new Date();
     const startStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     
@@ -43,7 +67,10 @@ export default function App() {
       }
     }, interval);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      clearInterval(logInterval);
+    };
   }, []);
 
   return (
@@ -161,6 +188,35 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* System Console / Logs */}
+        <div className="mt-10 md:mt-16 w-full max-w-lg bg-black/40 border border-blue-500/20 rounded-lg p-4 font-mono text-[10px] md:text-xs text-blue-300/80 text-left shadow-inner">
+          <div className="flex items-center gap-2 mb-2 border-b border-blue-500/10 pb-1">
+            <div className="w-2 h-2 rounded-full bg-red-500/50" />
+            <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+            <div className="w-2 h-2 rounded-full bg-green-500/50" />
+            <span className="ml-2 text-[8px] uppercase tracking-widest opacity-50">System Console v2.0</span>
+          </div>
+          <div className="space-y-1 h-24 overflow-hidden">
+            <AnimatePresence mode="popLayout">
+              {logs.map((log, i) => (
+                <motion.div
+                  key={log + i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="flex gap-2"
+                >
+                  <span className="text-blue-500/50">[{new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}]</span>
+                  <span>{log}</span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+          <div className="mt-2 text-[8px] text-blue-400/40 animate-pulse">
+            &gt; STATUS: {status.toUpperCase()} | PROGRESS: {Math.round(progress)}% | MEMORY: 4.2GB/16GB
+          </div>
+        </div>
       </div>
 
       {/* Floating Icons for Tech Vibe */}
