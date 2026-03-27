@@ -47,7 +47,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#020617] overflow-hidden font-sans">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-start bg-[#020617] overflow-hidden font-sans pt-12 md:pt-20">
       {/* Background Tech Elements */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-blue-500/20 rounded-full animate-pulse" />
@@ -76,86 +76,86 @@ export default function App() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full max-w-4xl px-4 sm:px-6 flex flex-col items-center text-center py-10">
-        {/* Logo */}
+      <div className="relative z-10 w-full max-w-4xl px-4 sm:px-6 flex flex-col items-center text-center">
+        {/* Logo at the Top */}
         <motion.h1 
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl sm:text-7xl md:text-9xl font-serif tracking-[0.15em] sm:tracking-[0.2em] mb-8 md:mb-12 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"
+          className="text-6xl sm:text-8xl md:text-[10rem] font-serif tracking-[0.15em] sm:tracking-[0.2em] mb-6 md:mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
         >
           GUCCI
         </motion.h1>
 
-        {/* Time Boxes */}
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 mb-8 md:mb-12 w-full max-w-2xl">
+        {/* Time Boxes - Tighter spacing */}
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8 w-full max-w-xl">
           {/* Start Time */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center shadow-xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
           >
-            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-xs md:text-sm font-medium mb-1 md:mb-2">
-              <Activity size={14} className="text-blue-400" />
+            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
+              <Activity size={12} className="text-blue-400" />
               MULAI
             </div>
-            <div className="text-3xl md:text-5xl font-serif text-white">
+            <div className="text-3xl md:text-4xl font-serif text-white">
               {startTime || '00:00'}
             </div>
           </motion.div>
 
           {/* End Time */}
           <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center shadow-xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
           >
-            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-xs md:text-sm font-medium mb-1 md:mb-2">
-              <ShieldCheck size={14} className="text-green-400" />
+            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
+              <ShieldCheck size={12} className="text-green-400" />
               SELESAI
             </div>
-            <div className="text-3xl md:text-5xl font-serif text-white">
+            <div className="text-3xl md:text-4xl font-serif text-white">
               {endTime || '00:00'}
             </div>
           </motion.div>
         </div>
 
-        {/* Instruction Text */}
+        {/* Instruction Text - Tighter spacing */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="max-w-2xl mb-8 md:mb-12"
+          transition={{ delay: 0.3 }}
+          className="max-w-2xl mb-6 md:mb-8"
         >
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-white/90 tracking-wide px-2">
+          <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-white/80 tracking-wide px-4">
             Proses dilakukan secara otomatis dan telah tersinkronisasi ke dalam akun kerja. Silakan menunggu hingga proses ini selesai, yang diperkirakan memakan waktu sekitar 5 menit.
           </p>
         </motion.div>
 
         {/* System Process Animation */}
-        <div className="w-full max-w-xs sm:max-w-md bg-white/5 backdrop-blur-sm border border-white/10 rounded-full p-1 mb-4 overflow-hidden">
+        <div className="w-full max-w-xs sm:max-w-sm bg-white/5 backdrop-blur-sm border border-white/10 rounded-full p-1 mb-3 overflow-hidden">
           <motion.div 
-            className="h-1.5 md:h-2 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+            className="h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ type: "spring", bounce: 0, duration: 0.5 }}
           />
         </div>
         
-        <div className="flex items-center gap-2 md:gap-3 text-blue-400 font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-widest">
-          <Cpu size={14} className="animate-pulse md:w-[18px] md:h-[18px]" />
+        <div className="flex items-center gap-2 text-blue-400 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest mb-4">
+          <Cpu size={12} className="animate-pulse" />
           <span>{status}</span>
-          <span className="ml-1 md:ml-2">{Math.round(progress)}%</span>
+          <span className="ml-1">{Math.round(progress)}%</span>
         </div>
 
         {/* Completion Message */}
         <AnimatePresence>
           {progress === 100 && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 bg-green-500/10 border border-green-500/30 rounded-2xl backdrop-blur-md shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-4 md:p-5 bg-green-500/10 border border-green-500/30 rounded-xl md:rounded-2xl backdrop-blur-md shadow-[0_0_20px_rgba(34,197,94,0.2)]"
             >
-              <p className="text-green-400 font-bold text-xl md:text-2xl tracking-wide">
+              <p className="text-green-400 font-bold text-lg md:text-xl tracking-wide">
                 Proses telah selesai, silahkan hubungi Kordinator Grup
               </p>
             </motion.div>
