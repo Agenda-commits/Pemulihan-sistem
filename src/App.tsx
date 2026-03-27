@@ -15,6 +15,26 @@ export default function App() {
   const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
+    const duration = 5 * 60; // 300 seconds
+    const STORAGE_KEY = 'gucci_recovery_start_time';
+    
+    // Get or set the persistent start time
+    let storedStartTime = localStorage.getItem(STORAGE_KEY);
+    let startTimeMs: number;
+
+    if (!storedStartTime) {
+      startTimeMs = Date.now();
+      localStorage.setItem(STORAGE_KEY, startTimeMs.toString());
+    } else {
+      startTimeMs = parseInt(storedStartTime, 10);
+    }
+
+    const startTimestamp = new Date(startTimeMs);
+    const endTimestamp = new Date(startTimeMs + duration * 1000);
+
+    setStartTime(startTimestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+    setEndTime(endTimestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+
     const systemLogs = [
       '[SYSTEM] Memulai protokol pemulihan...',
       '[ANALYSIS] Menjalankan proses analisis mendalam...',
@@ -38,34 +58,27 @@ export default function App() {
       }
     }, 3000);
 
-    const now = new Date();
-    const startStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-    
-    const end = new Date(now.getTime() + 5 * 60000);
-    const endStr = end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const updateProgress = () => {
+      const now = Date.now();
+      const elapsedSeconds = Math.floor((now - startTimeMs) / 1000);
+      const newProgress = Math.min((elapsedSeconds / duration) * 100, 100);
+      
+      setProgress(newProgress);
 
-    setStartTime(startStr);
-    setEndTime(endStr);
-
-    // Progress simulation for 5 minutes (300 seconds)
-    const duration = 5 * 60; // seconds
-    const interval = 1000; // 1 second
-    let elapsed = 0;
-
-    const timer = setInterval(() => {
-      elapsed += 1;
-      const newProgress = (elapsed / duration) * 100;
-      setProgress(Math.min(newProgress, 100));
-
-      if (elapsed < 30) setStatus('Authenticating...');
-      else if (elapsed < 120) setStatus('Synchronizing Data...');
-      else if (elapsed < 240) setStatus('Processing Transactions...');
-      else if (elapsed < 300) setStatus('Finalizing...');
+      if (elapsedSeconds < 30) setStatus('Authenticating...');
+      else if (elapsedSeconds < 120) setStatus('Synchronizing Data...');
+      else if (elapsedSeconds < 240) setStatus('Processing Transactions...');
+      else if (elapsedSeconds < 300) setStatus('Finalizing...');
       else {
         setStatus('Completed');
         clearInterval(timer);
       }
-    }, interval);
+    };
+
+    // Initial update
+    updateProgress();
+
+    const timer = setInterval(updateProgress, 1000);
 
     return () => {
       clearInterval(timer);
