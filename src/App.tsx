@@ -74,7 +74,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-start bg-[#020617] overflow-hidden font-sans pt-12 md:pt-20">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-start bg-[#020617] overflow-x-hidden font-sans pt-12 md:pt-20 pb-12">
       {/* Background Tech Elements */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-blue-500/20 rounded-full animate-pulse" />
@@ -92,7 +92,7 @@ export default function App() {
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           className="relative"
         >
-          <Globe className="text-blue-500 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px]" strokeWidth={0.5} />
+          <Globe className="text-blue-500 w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px]" strokeWidth={0.5} />
           <div className="absolute inset-0 bg-blue-500/10 blur-[60px] md:blur-[100px] rounded-full" />
         </motion.div>
         
@@ -108,7 +108,7 @@ export default function App() {
         <motion.h1 
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-6xl sm:text-8xl md:text-[10rem] font-serif tracking-[0.15em] sm:tracking-[0.2em] mb-6 md:mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+          className="text-4xl sm:text-7xl md:text-[8rem] lg:text-[10rem] font-serif tracking-[0.1em] sm:tracking-[0.2em] mb-6 md:mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
         >
           GUCCI
         </motion.h1>
@@ -180,43 +180,54 @@ export default function App() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-4 md:p-5 bg-green-500/10 border border-green-500/30 rounded-xl md:rounded-2xl backdrop-blur-md shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+              className="p-6 md:p-8 bg-green-500/10 border border-green-500/30 rounded-xl md:rounded-2xl backdrop-blur-md shadow-[0_0_30px_rgba(34,197,94,0.3)]"
             >
-              <p className="text-green-400 font-bold text-lg md:text-xl tracking-wide">
-                Proses telah selesai, silahkan hubungi Kordinator Grup
+              <p className="text-green-400 font-bold text-xl md:text-2xl tracking-wide text-center">
+                Akun sudah berhasil di pulihkan.
+              </p>
+              <p className="text-green-400/80 font-medium text-lg md:text-xl tracking-wide text-center mt-2">
+                Silahkan hubungi Kordinator Grup.
               </p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* System Console / Logs */}
-        <div className="mt-10 md:mt-16 w-full max-w-lg bg-black/40 border border-blue-500/20 rounded-lg p-4 font-mono text-[10px] md:text-xs text-blue-300/80 text-left shadow-inner">
-          <div className="flex items-center gap-2 mb-2 border-b border-blue-500/10 pb-1">
-            <div className="w-2 h-2 rounded-full bg-red-500/50" />
-            <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-            <div className="w-2 h-2 rounded-full bg-green-500/50" />
-            <span className="ml-2 text-[8px] uppercase tracking-widest opacity-50">System Console v2.0</span>
-          </div>
-          <div className="space-y-1 h-24 overflow-hidden">
-            <AnimatePresence mode="popLayout">
-              {logs.map((log, i) => (
-                <motion.div
-                  key={log + i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex gap-2"
-                >
-                  <span className="text-blue-500/50">[{new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}]</span>
-                  <span>{log}</span>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-          <div className="mt-2 text-[8px] text-blue-400/40 animate-pulse">
-            &gt; STATUS: {status.toUpperCase()} | PROGRESS: {Math.round(progress)}% | MEMORY: 4.2GB/16GB
-          </div>
-        </div>
+        {/* System Console / Logs - Hidden when completed */}
+        <AnimatePresence>
+          {progress < 100 && (
+            <motion.div 
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="mt-10 md:mt-16 w-full max-w-lg bg-black/40 border border-blue-500/20 rounded-lg p-4 font-mono text-[10px] md:text-xs text-blue-300/80 text-left shadow-inner"
+            >
+              <div className="flex items-center gap-2 mb-2 border-b border-blue-500/10 pb-1">
+                <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                <span className="ml-2 text-[8px] uppercase tracking-widest opacity-50">System Console v2.0</span>
+              </div>
+              <div className="space-y-1 h-24 overflow-hidden">
+                <AnimatePresence mode="popLayout">
+                  {logs.map((log, i) => (
+                    <motion.div
+                      key={log + i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex gap-2"
+                    >
+                      <span className="text-blue-500/50">[{new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}]</span>
+                      <span>{log}</span>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+              <div className="mt-2 text-[8px] text-blue-400/40 animate-pulse">
+                &gt; STATUS: {status.toUpperCase()} | PROGRESS: {Math.round(progress)}% | MEMORY: 4.2GB/16GB
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Floating Icons for Tech Vibe */}
