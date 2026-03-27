@@ -113,79 +113,94 @@ export default function App() {
           GUCCI
         </motion.h1>
 
-        {/* Time Boxes - Tighter spacing */}
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8 w-full max-w-xl">
-          {/* Start Time */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
-          >
-            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
-              <Activity size={12} className="text-blue-400" />
-              MULAI
-            </div>
-            <div className="text-3xl md:text-4xl font-serif text-white">
-              {startTime || '00:00'}
-            </div>
-          </motion.div>
-
-          {/* End Time */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
-          >
-            <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
-              <ShieldCheck size={12} className="text-green-400" />
-              SELESAI
-            </div>
-            <div className="text-3xl md:text-4xl font-serif text-white">
-              {endTime || '00:00'}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Instruction Text - Tighter spacing */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="max-w-2xl mb-6 md:mb-8"
-        >
-          <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-white/80 tracking-wide px-4">
-            Proses dilakukan secara otomatis dan telah tersinkronisasi ke dalam akun kerja. Silakan menunggu hingga proses ini selesai, yang diperkirakan memakan waktu sekitar 5 menit.
-          </p>
-        </motion.div>
-
-        {/* System Process Animation */}
-        <div className="w-full max-w-xs sm:max-w-sm bg-white/5 backdrop-blur-sm border border-white/10 rounded-full p-1 mb-3 overflow-hidden">
-          <motion.div 
-            className="h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-          />
-        </div>
-        
-        <div className="flex items-center gap-2 text-blue-400 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest mb-4">
-          <Cpu size={12} className="animate-pulse" />
-          <span>{status}</span>
-          <span className="ml-1">{Math.round(progress)}%</span>
-        </div>
-
-        {/* Completion Message */}
-        <AnimatePresence>
-          {progress === 100 && (
+        {/* Main Content Area - Hidden when completed */}
+        <AnimatePresence mode="wait">
+          {progress < 100 ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="p-6 md:p-8 bg-green-500/10 border border-green-500/30 rounded-xl md:rounded-2xl backdrop-blur-md shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+              key="active-process"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5 }}
+              className="w-full flex flex-col items-center"
             >
-              <p className="text-green-400 font-bold text-xl md:text-2xl tracking-wide text-center">
+              {/* Time Boxes - Tighter spacing */}
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8 w-full max-w-xl">
+                {/* Start Time */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
+                >
+                  <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
+                    <Activity size={12} className="text-blue-400" />
+                    MULAI
+                  </div>
+                  <div className="text-3xl md:text-4xl font-serif text-white">
+                    {startTime || '00:00'}
+                  </div>
+                </motion.div>
+
+                {/* End Time */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col items-center justify-center shadow-xl"
+                >
+                  <div className="flex items-center gap-2 text-white/60 uppercase tracking-widest text-[10px] md:text-xs font-medium mb-1">
+                    <ShieldCheck size={12} className="text-green-400" />
+                    SELESAI
+                  </div>
+                  <div className="text-3xl md:text-4xl font-serif text-white">
+                    {endTime || '00:00'}
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Instruction Text - Tighter spacing */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="max-w-2xl mb-6 md:mb-8"
+              >
+                <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-white/80 tracking-wide px-4">
+                  Proses dilakukan secara otomatis dan telah tersinkronisasi ke dalam akun kerja. Silakan menunggu hingga proses ini selesai, yang diperkirakan memakan waktu sekitar 5 menit.
+                </p>
+              </motion.div>
+
+              {/* System Process Animation */}
+              <div className="w-full max-w-xs sm:max-w-sm bg-white/5 backdrop-blur-sm border border-white/10 rounded-full p-1 mb-3 overflow-hidden">
+                <motion.div 
+                  className="h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                />
+              </div>
+              
+              <div className="flex items-center gap-2 text-blue-400 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest mb-4">
+                <Cpu size={12} className="animate-pulse" />
+                <span>{status}</span>
+                <span className="ml-1">{Math.round(progress)}%</span>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="completion-message"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ type: "spring", damping: 12, stiffness: 100 }}
+              className="p-8 md:p-12 bg-green-500/10 border border-green-500/30 rounded-2xl md:rounded-[2.5rem] backdrop-blur-xl shadow-[0_0_50px_rgba(34,197,94,0.2)] max-w-2xl w-full"
+            >
+              <div className="flex justify-center mb-6">
+                <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/40">
+                  <ShieldCheck size={32} className="text-green-400" />
+                </div>
+              </div>
+              <h2 className="text-green-400 font-bold text-2xl md:text-4xl tracking-tight text-center mb-4">
                 Akun sudah berhasil di pulihkan.
-              </p>
-              <p className="text-green-400/80 font-medium text-lg md:text-xl tracking-wide text-center mt-2">
+              </h2>
+              <p className="text-green-400/90 font-medium text-lg md:text-2xl tracking-wide text-center">
                 Silahkan hubungi Kordinator Grup.
               </p>
             </motion.div>
@@ -198,6 +213,7 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 1 }}
               exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
               className="mt-10 md:mt-16 w-full max-w-lg bg-black/40 border border-blue-500/20 rounded-lg p-4 font-mono text-[10px] md:text-xs text-blue-300/80 text-left shadow-inner"
             >
               <div className="flex items-center gap-2 mb-2 border-b border-blue-500/10 pb-1">
@@ -230,22 +246,44 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {/* Floating Icons for Tech Vibe */}
-      <div className="absolute bottom-10 left-10 text-white/20 flex flex-col gap-4">
-        <Activity size={24} />
-        <Activity size={24} className="opacity-50" />
-        <Activity size={24} className="opacity-25" />
-      </div>
-      
-      <div className="absolute bottom-10 right-10 text-white/20 flex flex-col gap-4 items-end">
-        <MapPin size={24} />
-        <div className="text-[10px] font-mono tracking-tighter">LAT: 34.0522 N</div>
-        <div className="text-[10px] font-mono tracking-tighter">LNG: 118.2437 W</div>
-      </div>
+      {/* Floating Icons for Tech Vibe - Hidden when completed */}
+      <AnimatePresence>
+        {progress < 100 && (
+          <>
+            <motion.div 
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-10 left-10 text-white/20 flex flex-col gap-4"
+            >
+              <Activity size={24} />
+              <Activity size={24} className="opacity-50" />
+              <Activity size={24} className="opacity-25" />
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-10 right-10 text-white/20 flex flex-col gap-4 items-end"
+            >
+              <MapPin size={24} />
+              <div className="text-[10px] font-mono tracking-tighter">LAT: 34.0522 N</div>
+              <div className="text-[10px] font-mono tracking-tighter">LNG: 118.2437 W</div>
+            </motion.div>
 
-      {/* Corner Accents */}
-      <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-blue-500/30 m-8 rounded-tl-3xl" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-blue-500/30 m-8 rounded-br-3xl" />
+            {/* Corner Accents */}
+            <motion.div 
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-blue-500/30 m-8 rounded-tl-3xl" 
+            />
+            <motion.div 
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-blue-500/30 m-8 rounded-br-3xl" 
+            />
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
