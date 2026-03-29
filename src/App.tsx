@@ -18,23 +18,8 @@ export default function App() {
 
   useEffect(() => {
     const duration = 5 * 60; // 300 seconds
-    const STORAGE_KEY = 'gucci_recovery_start_time';
     
-    let startTimeMs: number;
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        startTimeMs = parseInt(stored, 10);
-        if (isNaN(startTimeMs)) throw new Error('Invalid stored time');
-      } else {
-        startTimeMs = Date.now();
-        localStorage.setItem(STORAGE_KEY, startTimeMs.toString());
-      }
-    } catch (e) {
-      startTimeMs = Date.now();
-      try { localStorage.setItem(STORAGE_KEY, startTimeMs.toString()); } catch (err) {}
-    }
-
+    const startTimeMs = Date.now();
     const startTimestamp = new Date(startTimeMs);
     const endTimestamp = new Date(startTimeMs + duration * 1000);
 
