@@ -17,7 +17,7 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const duration = 5 * 60; // 300 seconds
+    const duration = 10 * 60; // 600 seconds
     
     const startTimeMs = Date.now();
     const startTimestamp = new Date(startTimeMs);
@@ -57,10 +57,10 @@ export default function App() {
       
       setProgress(newProgress);
 
-      if (elapsedSeconds < 30) setStatus('Authenticating...');
-      else if (elapsedSeconds < 120) setStatus('Synchronizing Data...');
-      else if (elapsedSeconds < 240) setStatus('Processing Transactions...');
-      else if (elapsedSeconds < 300) setStatus('Finalizing...');
+      if (elapsedSeconds < 60) setStatus('Authenticating...');
+      else if (elapsedSeconds < 240) setStatus('Synchronizing Data...');
+      else if (elapsedSeconds < 480) setStatus('Processing Transactions...');
+      else if (elapsedSeconds < 600) setStatus('Finalizing...');
       else {
         setStatus('Completed');
         if (timer) clearInterval(timer);
@@ -170,7 +170,7 @@ export default function App() {
                 className="max-w-2xl mb-6 md:mb-8"
               >
                 <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-white/80 tracking-wide px-4">
-                  Proses dilakukan secara otomatis dan telah tersinkronisasi ke dalam akun kerja. Silakan menunggu hingga proses ini selesai, yang diperkirakan memakan waktu sekitar 5 menit.
+                  Proses dilakukan secara otomatis dan telah tersinkronisasi ke dalam akun kerja. Silakan menunggu hingga proses ini selesai, yang diperkirakan memakan waktu sekitar 10 menit.
                 </p>
               </motion.div>
 
