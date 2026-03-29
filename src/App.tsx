@@ -14,19 +14,25 @@ export default function App() {
   const [status, setStatus] = useState('Initializing...');
   const [logs, setLogs] = useState<string[]>([]);
 
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     const duration = 5 * 60; // 300 seconds
     const STORAGE_KEY = 'gucci_recovery_start_time';
     
-    // Get or set the persistent start time
-    let storedStartTime = localStorage.getItem(STORAGE_KEY);
     let startTimeMs: number;
-
-    if (!storedStartTime) {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        startTimeMs = parseInt(stored, 10);
+        if (isNaN(startTimeMs)) throw new Error('Invalid stored time');
+      } else {
+        startTimeMs = Date.now();
+        localStorage.setItem(STORAGE_KEY, startTimeMs.toString());
+      }
+    } catch (e) {
       startTimeMs = Date.now();
-      localStorage.setItem(STORAGE_KEY, startTimeMs.toString());
-    } else {
-      startTimeMs = parseInt(storedStartTime, 10);
+      try { localStorage.setItem(STORAGE_KEY, startTimeMs.toString()); } catch (err) {}
     }
 
     const startTimestamp = new Date(startTimeMs);
@@ -50,13 +56,14 @@ export default function App() {
 
     let logIndex = 0;
     const logInterval = setInterval(() => {
-      if (logIndex < systemLogs.length) {
-        setLogs(prev => [...prev.slice(-4), systemLogs[logIndex]]);
-        logIndex++;
-      } else {
-        logIndex = 0; // Loop logs
-      }
+      setLogs(prev => {
+        const nextLog = systemLogs[logIndex];
+        logIndex = (logIndex + 1) % systemLogs.length;
+        return [...prev.slice(-4), nextLog];
+      });
     }, 3000);
+
+    let timer: NodeJS.Timeout;
 
     const updateProgress = () => {
       const now = Date.now();
@@ -71,20 +78,21 @@ export default function App() {
       else if (elapsedSeconds < 300) setStatus('Finalizing...');
       else {
         setStatus('Completed');
-        clearInterval(timer);
+        if (timer) clearInterval(timer);
       }
     };
 
-    // Initial update
     updateProgress();
-
-    const timer = setInterval(updateProgress, 1000);
+    setIsReady(true);
+    timer = setInterval(updateProgress, 1000);
 
     return () => {
-      clearInterval(timer);
+      if (timer) clearInterval(timer);
       clearInterval(logInterval);
     };
   }, []);
+
+  if (!isReady) return <div className="min-h-screen bg-[#020617]" />;
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-start bg-[#020617] overflow-x-hidden font-sans pt-12 md:pt-20 pb-12">
