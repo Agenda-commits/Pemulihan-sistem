@@ -206,9 +206,32 @@ export default function App() {
               <h2 className="text-green-400 font-bold text-2xl md:text-4xl tracking-tight text-center mb-4">
                 Akun sudah berhasil di pulihkan.
               </h2>
-              <p className="text-green-400/90 font-medium text-lg md:text-2xl tracking-wide text-center">
-                Silahkan hubungi Kordinator Grup.
+              <p className="text-green-400/90 font-medium text-lg md:text-xl tracking-wide text-center mb-8">
+                Silahkan periksa akun anda dan hubungi Kordinator Grup.
               </p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex flex-col items-center gap-4"
+              >
+                <a 
+                  href="http://gccshop.vip/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative px-8 py-4 bg-green-500 text-black font-bold text-lg rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(34,197,94,0.6)] active:scale-95"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    LOGIN KE AKUN
+                    <Cpu size={20} className="group-hover:rotate-90 transition-transform duration-500" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+                <span className="text-green-400/50 text-xs font-mono tracking-widest uppercase">
+                  Secure Redirect Protocol Active
+                </span>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
