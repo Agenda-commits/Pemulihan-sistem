@@ -16,6 +16,16 @@ export default function App() {
 
   const [isReady, setIsReady] = useState(false);
 
+  const [memory, setMemory] = useState('4.2GB/16GB');
+
+  useEffect(() => {
+    const memInterval = setInterval(() => {
+      const used = (Math.random() * (6.5 - 3.8) + 3.8).toFixed(1);
+      setMemory(`${used}GB/16GB`);
+    }, 4000);
+    return () => clearInterval(memInterval);
+  }, []);
+
   useEffect(() => {
     const duration = 10 * 60; // 600 seconds
     
@@ -26,27 +36,34 @@ export default function App() {
     setStartTime(startTimestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
     setEndTime(endTimestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
 
-    const systemLogs = [
-      '[SYSTEM] Memulai protokol pemulihan...',
-      '[ANALYSIS] Menjalankan proses analisis mendalam...',
-      '[UPGRADE] Mengunduh paket upgrade sistem v2.4.0...',
-      '[REPAIR] Melakukan perbaikan pada modul inti...',
-      '[CLEANUP] Pembersihan bug dan optimasi cache...',
-      '[SECURITY] Memverifikasi enkripsi akun kerja...',
-      '[DATABASE] Sinkronisasi database global...',
-      '[NETWORK] Menstabilkan koneksi server...',
-      '[SYSTEM] Validasi integritas file selesai.',
-      '[PROCESS] Menunggu respon koordinator...'
-    ];
+    const prefixes = ['SYSTEM', 'ANALYSIS', 'UPGRADE', 'REPAIR', 'CLEANUP', 'SECURITY', 'DATABASE', 'NETWORK', 'PROCESS', 'KERNEL', 'FIREWALL', 'ENCRYPTION', 'SYNC', 'CACHE', 'AUTH', 'IO', 'MEMORY', 'CPU', 'STORAGE', 'API'];
+    const actions = ['Memulai', 'Menjalankan', 'Mengunduh', 'Melakukan', 'Pembersihan', 'Memverifikasi', 'Sinkronisasi', 'Menstabilkan', 'Validasi', 'Menunggu', 'Mendeteksi', 'Mengoptimalkan', 'Memperbaiki', 'Mengenkripsi', 'Mendekripsi', 'Memindai', 'Mengalokasikan', 'Melepaskan', 'Memperbarui', 'Mengonfigurasi'];
+    const targets = ['protokol pemulihan', 'proses analisis mendalam', 'paket upgrade sistem v2.4.0', 'modul inti', 'bug dan optimasi cache', 'enkripsi akun kerja', 'database global', 'koneksi server', 'integritas file', 'respon koordinator', 'ancaman eksternal', 'alokasi memori', 'tabel routing', 'kunci keamanan RSA', 'metadata pengguna', 'log aktivitas', 'jalur akses API', 'driver perangkat', 'sub-sistem kernel', 'buffer sinkronisasi'];
 
-    let logIndex = 0;
+    const generateRandomLog = () => {
+      const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+      const action = actions[Math.floor(Math.random() * actions.length)];
+      const target = targets[Math.floor(Math.random() * targets.length)];
+      const hex = Math.random().toString(16).substring(2, 8).toUpperCase();
+      const pid = Math.floor(Math.random() * 9000) + 1000;
+      
+      const templates = [
+        `[${prefix}] ${action} ${target}...`,
+        `[${prefix}] ${action} ${target} (PID: ${pid})`,
+        `[${prefix}] ${action} ${target} pada alamat 0x${hex}`,
+        `[${prefix}] Status ${target}: ${action} berhasil.`,
+        `[${prefix}] Mencoba ${action} ${target} kembali...`
+      ];
+      
+      return templates[Math.floor(Math.random() * templates.length)];
+    };
+
     const logInterval = setInterval(() => {
       setLogs(prev => {
-        const nextLog = systemLogs[logIndex];
-        logIndex = (logIndex + 1) % systemLogs.length;
+        const nextLog = generateRandomLog();
         return [...prev.slice(-4), nextLog];
       });
-    }, 3000);
+    }, 2000);
 
     let timer: NodeJS.Timeout;
 
@@ -217,7 +234,7 @@ export default function App() {
                 className="flex flex-col items-center gap-4"
               >
                 <a 
-                  href="http://gccshop.vip/"
+                  href="https://gccshop.vip/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative px-8 py-4 bg-green-500 text-black font-bold text-lg rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(34,197,94,0.6)] active:scale-95"
@@ -268,7 +285,7 @@ export default function App() {
                 </AnimatePresence>
               </div>
               <div className="mt-2 text-[8px] text-blue-400/40 animate-pulse">
-                &gt; STATUS: {status.toUpperCase()} | PROGRESS: {Math.round(progress)}% | MEMORY: 4.2GB/16GB
+                &gt; STATUS: {status.toUpperCase()} | PROGRESS: {Math.round(progress)}% | MEMORY: {memory}
               </div>
             </motion.div>
           )}
